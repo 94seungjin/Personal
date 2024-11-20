@@ -19,7 +19,7 @@ private:
     int mPort;
     std::string mVideoFile;
 
-    bool bIsClientConnected;
+    bool mbIsClientConnected;
 
     bool InitializeServer();
     void Cleanup();

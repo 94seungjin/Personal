@@ -7,7 +7,7 @@
 using namespace std;
 
 Server::Server(int port, const string &videoFile)
-    : mServerSocket(-1), mClientSocket(-1), mPort(port), mVideoFile(videoFile), bIsClientConnected(false) {}
+    : mServerSocket(-1), mClientSocket(-1), mPort(port), mVideoFile(videoFile), mbIsClientConnected(false) {}
 
 Server::~Server()
 {
@@ -50,7 +50,7 @@ bool Server::InitializeServer()
     }
 
     cout << "Client connected!" << endl;
-    bIsClientConnected = true;
+    mbIsClientConnected = true;
     return true;
 }
 
@@ -116,7 +116,7 @@ void Server::Cleanup()
     {
         close(mClientSocket);
         mClientSocket = -1;
-        bIsClientConnected = false;
+        mbIsClientConnected = false;
         cout << "Client connection closed." << endl;
     }
 

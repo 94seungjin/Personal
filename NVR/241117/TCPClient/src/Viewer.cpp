@@ -7,7 +7,7 @@
 using namespace std;
 
 Viewer::Viewer(const string &serverIp, int serverPort)
-    : mServerIp(serverIp), mServerPort(serverPort), mSocket(-1), bIsConnected(false), bStopRequested(false) {}
+    : mServerIp(serverIp), mServerPort(serverPort), mSocket(-1), mbIsConnected(false), mbStopRequested(false) {}
 
 Viewer::~Viewer()
 {
@@ -40,7 +40,7 @@ bool Viewer::ConnectToServer()
     }
 
     cout << "Connected to server!" << endl;
-    bIsConnected = true;
+    mbIsConnected = true;
     return true;
 }
 
@@ -56,7 +56,7 @@ void Viewer::Start()
     cv::Mat frame;
     int size;
 
-    while (!bStopRequested) // 종료 조건 추가
+    while (!mbStopRequested) // 종료 조건 추가
     {
         // Receive size of the incoming frame
         int valread = recv(mSocket, &size, sizeof(size), 0);
@@ -100,7 +100,7 @@ void Viewer::Start()
 
 void Viewer::Stop()
 {
-    bStopRequested = true; // 종료 플래그 설정
+    mbStopRequested = true; // 종료 플래그 설정
     cout << "Stop requested." << endl;
 }
 
@@ -111,10 +111,10 @@ void Viewer::DisplayFrame(const cv::Mat &frame)
 
 void Viewer::Cleanup()
 {
-    if (bIsConnected)
+    if (mbIsConnected)
     {
         close(mSocket);
-        bIsConnected = false;
+        mbIsConnected = false;
         cout << "Socket closed." << endl;
     }
     cv::destroyAllWindows();

@@ -17,8 +17,8 @@ private:
     int mSocket;
     std::string mServerIp;
     int mServerPort;
-    bool bIsConnected;
-    bool bStopRequested;
+    bool mbIsConnected;
+    bool mbStopRequested;
 
     bool ConnectToServer();
     void DisplayFrame(const cv::Mat &frame);

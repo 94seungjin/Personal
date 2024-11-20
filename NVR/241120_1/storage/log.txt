@@ -1,0 +1,69 @@
+2024-11-20 13:45:34 [INFO] Server: socket() success
+2024-11-20 13:45:34 [INFO] Server: server sockaddr_in structure setting success
+2024-11-20 13:45:34 [INFO] Server: bind() success
+2024-11-20 13:45:34 [INFO] Server: listen() success
+2024-11-20 13:45:34 [INFO] Server: listening port: 12345
+2024-11-20 13:45:34 [INFO] Server: Waiting for client connection...
+2024-11-20 13:54:16 [INFO] Server: socket() success
+2024-11-20 13:54:16 [INFO] Server: server sockaddr_in structure setting success
+2024-11-20 13:54:16 [INFO] Server: bind() success
+2024-11-20 13:54:16 [INFO] Server: listen() success
+2024-11-20 13:54:16 [INFO] Server: listening port: 12345
+2024-11-20 13:54:16 [INFO] Server: Waiting for client connection...
+2024-11-20 13:57:18 [INFO] Server: Client connected from IP: 127.0.0.1
+2024-11-20 13:57:18 [INFO] Server: Streaming started
+2024-11-20 13:57:18 [INFO] Server: Metadata loaded: 20231120_123000, CAM01, Object detected: Person
+2024-11-20 13:57:18 [INFO] Server: RawData loaded: 5 bytes
+2024-11-20 13:57:18 [INFO] Server: Streaming completed for timestamp: 20231120_123000
+2024-11-20 13:57:18 [INFO] Server: Client disconnected
+2024-11-20 13:57:18 [INFO] Server: Waiting for client connection...
+2024-11-20 14:48:01 [INFO] Server: socket() success
+2024-11-20 14:48:01 [INFO] Server: server sockaddr_in structure setting success
+2024-11-20 14:48:01 [INFO] Server: bind() success
+2024-11-20 14:48:01 [INFO] Server: listen() success
+2024-11-20 14:48:01 [INFO] Server: listening port: 12345
+2024-11-20 14:48:01 [INFO] Server: Waiting for client connection...
+2024-11-20 14:48:04 [INFO] Viewer: Viewer started
+2024-11-20 14:48:04 [INFO] Viewer: Socket created
+2024-11-20 14:48:04 [INFO] Viewer: Connected to server at 127.0.0.1:12345
+2024-11-20 14:48:04 [INFO] Viewer: Start receiving data
+2024-11-20 14:48:04 [INFO] Server: Client connected from IP: 127.0.0.1
+2024-11-20 14:48:04 [INFO] Server: Streaming started
+2024-11-20 14:48:04 [INFO] Server: Metadata loaded: 20231120_123000, CAM01, Object detected: Person
+2024-11-20 14:48:04 [INFO] Server: RawData loaded: 5 bytes
+2024-11-20 14:48:04 [INFO] Viewer: Received raw data
+2024-11-20 14:48:04 [INFO] Server: Streaming completed for timestamp: 20231120_123000
+2024-11-20 14:48:04 [INFO] Viewer: Processing raw data
+2024-11-20 14:48:04 [INFO] Server: Client disconnected
+2024-11-20 14:48:04 [INFO] Server: Waiting for client connection...
+2024-11-20 14:48:04 [ERROR] Viewer: Failed to decode frame
+2024-11-20 14:48:04 [INFO] Viewer: Received raw data
+2024-11-20 14:48:04 [INFO] Viewer: Processing raw data
+2024-11-20 14:48:04 [ERROR] Viewer: Failed to decode frame
+2024-11-20 14:48:04 [WARNING] Viewer: Disconnected from server
+2024-11-20 14:48:04 [INFO] Viewer: Socket closed
+2024-11-20 15:36:58 [INFO] Server: socket() success
+2024-11-20 15:36:58 [INFO] Server: server sockaddr_in structure setting success
+2024-11-20 15:36:58 [INFO] Server: bind() success
+2024-11-20 15:36:58 [INFO] Server: listen() success
+2024-11-20 15:36:58 [INFO] Server: listening port: 12345
+2024-11-20 15:36:58 [INFO] Server: Waiting for client connection...
+2024-11-20 15:37:02 [INFO] Viewer: Viewer started
+2024-11-20 15:37:02 [INFO] Viewer: Socket created
+2024-11-20 15:37:02 [INFO] Viewer: Connected to server at 127.0.0.1:12345
+2024-11-20 15:37:02 [INFO] Server: Client connected from IP: 127.0.0.1
+2024-11-20 15:37:02 [INFO] Viewer: Start receiving data
+2024-11-20 15:37:02 [INFO] Server: Streaming started
+2024-11-20 15:37:02 [INFO] Server: Metadata loaded: 20231120_123000, CAM01, Object detected: Person
+2024-11-20 15:37:02 [INFO] Server: RawData loaded: 5 bytes
+2024-11-20 15:37:02 [INFO] Viewer: Received raw data
+2024-11-20 15:37:02 [INFO] Server: Streaming completed for timestamp: 20231120_123000
+2024-11-20 15:37:02 [INFO] Viewer: Processing raw data
+2024-11-20 15:37:02 [INFO] Server: Client disconnected
+2024-11-20 15:37:02 [INFO] Server: Waiting for client connection...
+2024-11-20 15:37:02 [ERROR] Viewer: Failed to decode frame
+2024-11-20 15:37:02 [INFO] Viewer: Received raw data
+2024-11-20 15:37:02 [INFO] Viewer: Processing raw data
+2024-11-20 15:37:02 [ERROR] Viewer: Failed to decode frame
+2024-11-20 15:37:02 [WARNING] Viewer: Disconnected from server
+2024-11-20 15:37:02 [INFO] Viewer: Socket closed

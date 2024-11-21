@@ -1,0 +1,9 @@
+{
+    "compression": "JPEG",
+    "frameNumber": 1111,
+    "resolution": [
+        960,
+        720
+    ],
+    "videoTimestamp": "123444ms"
+}

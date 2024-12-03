@@ -1,107 +1,83 @@
 #include <iostream>
-#include <chrono>
-#include <iomanip>
-#include <sstream>
-#include <cstring> // for strncpy
 #include "VideoHeader.h"
-#include "FrameHeader.h"
 #include "FrameBody.h"
+#include "FrameHeader.h"
+#include "FrameQueue.h"
 #include "Storage.h"
 
-// 타임스탬프 생성 함수
-std::string GenerateTimestamp()
+void TestVideoStorageWorkflow()
 {
-    auto now = std::chrono::system_clock::now();
-    auto timeT = std::chrono::system_clock::to_time_t(now);
-    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+    std::cout << "=== Video Storage Workflow Test ===" << std::endl;
 
-    std::tm tm;
-    localtime_r(&timeT, &tm);
+    // 1. 비디오 헤더 초기화
+    std::cout << "1. Initializing Video Header..." << std::endl;
+    VideoHeader videoHeader;
+    videoHeader.setVideoID(1234);
+    videoHeader.setResolution(1920, 1080);
+    videoHeader.setFrameRate(15);
+    videoHeader.setVideoName("20241201_120000.000");
 
-    std::ostringstream oss;
-    oss << std::put_time(&tm, "%Y%m%d_%H%M%S") << '.' << std::setfill('0') << std::setw(3) << ms.count();
-    std::string timestamp = oss.str();
+    std::cout << "Video Header Initialized: " << std::endl;
+    std::cout << "Video ID: " << videoHeader.getVideoID() << std::endl;
+    std::cout << "Resolution: " << videoHeader.getResolutionWidth() << "x" << videoHeader.getResolutionHeight() << std::endl;
+    std::cout << "Frame Rate: " << videoHeader.getFrameRate() << " fps" << std::endl;
+    std::cout << "Video Name: " << videoHeader.getVideoName() << std::endl;
 
-    // 정확히 18자로 제한
-    if (timestamp.size() > 18)
+    // 2. Storage 객체 생성 및 비디오 초기화
+    std::cout << "\n2. Creating Storage and Initializing Video Storage..." << std::endl;
+    Storage storage("video_storage.bin");
+    storage.initializeVideoStorage(videoHeader);
+    std::cout << "Video Storage Initialized Successfully!" << std::endl;
+
+    // 3. 프레임 저장
+    std::cout << "\n3. Saving Frames to Storage..." << std::endl;
+    for (int i = 0; i < 5; ++i)
     {
-        timestamp = timestamp.substr(0, 18);
+        FrameHeader frameHeader;
+        frameHeader.setTimestamp(i * 1000); // timestamp 설정
+        frameHeader.setFrameID(i);         // frame ID 설정
+        frameHeader.setSize(1024);         // frame 크기 설정
+
+        FrameBody frameBody;
+        std::string frameData = "Frame Data " + std::to_string(i); // 프레임 데이터
+        frameBody.setData(frameData.c_str(), frameData.size());
+
+        storage.saveFrame(frameHeader, frameBody);
+        std::cout << "Saved Frame " << i << " to Storage." << std::endl;
     }
 
-    return timestamp;
+    // 4. 저장된 프레임 읽기
+    std::cout << "\n4. Reading Frames from Storage..." << std::endl;
+    for (int i = 0; i < 5; ++i)
+    {
+        FrameHeader frameHeader;
+        FrameBody frameBody;
+        if (storage.readFrame(i, frameHeader, frameBody))
+        {
+            std::cout << "Read Frame " << i << " - Timestamp: " << frameHeader.getTimestamp()
+                      << ", FrameID: " << frameHeader.getFrameID()
+                      << ", Data: " << frameBody.getData() << std::endl;
+        }
+        else
+        {
+            std::cout << "Failed to Read Frame " << i << std::endl;
+        }
+    }
+
+    // 5. 비디오 저장 종료
+    std::cout << "\n5. Finalizing Video Storage..." << std::endl;
+    storage.finalizeVideoStorage();
+    std::cout << "Video Storage Finalized Successfully!" << std::endl;
+
+    std::cout << "=== Video Storage Workflow Test Completed ===" << std::endl;
 }
 
 int main()
 {
-    try
-    {
-        // 1. 비디오 헤더 생성 및 초기화
-        video::VideoHeader videoHeader;
-        videoHeader.totalFrames = 0;
-        videoHeader.width = 1920;
-        videoHeader.height = 1080;
-        videoHeader.frameRate = 15;
-        strncpy(videoHeader.creationTime, "20241201_150000.00", sizeof(videoHeader.creationTime) - 1);
-        videoHeader.creationTime[sizeof(videoHeader.creationTime) - 1] = '\0';
-        videoHeader.startPoint = 0;
-        videoHeader.endPoint = 0;
+    std::cout << "=== Start Testing ===" << std::endl;
 
-        std::string filePath = "video_test.bin";
-        size_t maxFrames = 10;
-        video::Storage storage(filePath, maxFrames);
+    TestVideoStorageWorkflow();
 
-        std::cout << "Initializing video storage..." << std::endl;
-        storage.InitializeVideo(videoHeader);
-
-        // 2. 프레임 데이터 생성 및 저장
-        for (uint32_t i = 0; i < 15; ++i)
-	{
-            video::FrameHeader frameHeader;
-            frameHeader.frameId = i;
-            frameHeader.bodySize = 1024;
-
-            std::string timestamp = GenerateTimestamp();
-            strncpy(frameHeader.timestamp, timestamp.c_str(), sizeof(frameHeader.timestamp) - 1);
-            frameHeader.timestamp[sizeof(frameHeader.timestamp) - 1] = '\0';
-
-            video::FrameBody frameBody;
-            frameBody.data = std::vector<uint8_t>(1024, static_cast<uint8_t>(i)); // 바디 데이터를 i로 채움
-
-            storage.SaveFrame(frameHeader, frameBody);
-            std::cout << "Saved frame " << i << " with timestamp " << frameHeader.timestamp << std::endl;
-        }
-
-        // 3. 저장된 프레임 읽기 테스트
-        video::FrameHeader retrievedHeader;
-        video::FrameBody retrievedBody;
-
-        std::cout << "Retrieving frames from storage..." << std::endl;
-        while (storage.GetNextFrame(retrievedHeader, retrievedBody)) {
-            std::cout << "Frame ID: " << retrievedHeader.frameId
-                      << ", Body Size: " << retrievedHeader.bodySize
-                      << ", Timestamp: " << retrievedHeader.timestamp << std::endl;
-        }
-
-        // 4. JSON 직렬화 테스트
-        nlohmann::json videoJson = videoHeader.ToJson();
-        std::cout << "Video Header as JSON:\n" << videoJson.dump(4) << std::endl;
-
-        video::VideoHeader newVideoHeader;
-        newVideoHeader.FromJson(videoJson);
-        std::cout << "Deserialized Video Header:\n"
-                  << "Width: " << newVideoHeader.width
-                  << ", Height: " << newVideoHeader.height
-                  << ", Frame Rate: " << newVideoHeader.frameRate << std::endl;
-
-        // 5. 비디오 종료
-        storage.FinalizeVideo();
-        std::cout << "Video finalized and saved to " << filePath << std::endl;
-
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
-
+    std::cout << "=== End Testing ===" << std::endl;
     return 0;
 }

@@ -1,38 +1,27 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -pedantic -g
+CXXFLAGS = -std=c++17 -Wall -Wextra -O2
 
-# Output executable
-TARGET = storage
+# Target executable
+TARGET = main
 
 # Source and header files
-SRCS = main.cpp \
-       VideoHeader.cpp \
-       FrameHeader.cpp \
-       FrameQueue.cpp \
-       Storage.cpp
+SOURCES = main.cpp VideoHeader.cpp FrameBody.cpp FrameHeader.cpp FrameQueue.cpp Storage.cpp
+HEADERS = VideoHeader.h FrameBody.h FrameHeader.h FrameQueue.h Storage.h
 
-HEADERS = Serialize.h \
-          VideoHeader.h \
-          FrameHeader.h \
-          FrameQueue.h \
-          FrameBody.h \
-          Storage.h
+# Object files
+OBJECTS = $(SOURCES:.cpp=.o)
 
-OBJS = $(SRCS:.cpp=.o)
-
-# Rules
+# Build target
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS)
 
 %.o: %.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# Clean up build files
 clean:
-	rm -f $(OBJS) $(TARGET)
-
-run: $(TARGET)
-	./$(TARGET)
+	rm -f $(TARGET) $(OBJECTS)
 
